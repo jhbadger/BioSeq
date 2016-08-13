@@ -32,8 +32,9 @@ module BioSeq
   class Protein < Sequence
   end
   class FastaFile
-    def initialize(filename)
+    def initialize(filename, type=Sequence)
       @file = File.new(filename)
+      @type = type
     end
     def each
       seq = ""
@@ -41,7 +42,8 @@ module BioSeq
       @file.each_line do |line|
         if line[0] == '>'
           if seq != ""
-            yield Sequence.new(header, seq)
+            @type = Sequence.new(header, seq).type if @type==Sequence
+            yield @type.new(header, seq)
             seq = ""
             header = line[1..line.size].chomp
           end
@@ -49,7 +51,7 @@ module BioSeq
           seq += line.chomp.upcase
         end
       end
-      yield Sequence.new(header, seq) if seq != ""
+      yield @type.new(header, seq) if seq != ""
     end
   end
 end
