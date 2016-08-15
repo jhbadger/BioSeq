@@ -36,6 +36,9 @@ module BioSeq
     def to_DNA
       Nucleic.new(@definition, @seq.gsub("U","T"))
     end
+    def gc_percent
+      100*(@seq.count("GC"))/@seq.size
+    end
   end
   class Protein < Sequence
   end

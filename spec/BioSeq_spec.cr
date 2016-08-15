@@ -35,4 +35,7 @@ describe BioSeq do
   it "should convert DNA to RNA to DNA" do
     s.to_RNA.to_DNA.seq.should eq(s.seq)
   end
+  it "should compute gc percentage" do
+    s.gc_percent.should eq(33)
+  end
 end
