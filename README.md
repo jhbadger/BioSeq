@@ -21,7 +21,7 @@ dependencies:
 require "BioSeq"
 
 BioSeq::FastaFile.new("otus.fa").each do |seq|
-  print seq.to_fasta+"\n"
+  print seq.to_fasta
 end
 ```
 

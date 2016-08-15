@@ -2,6 +2,11 @@ require "./BioSeq/*"
 
 module BioSeq
   class Sequence
+    getter entry_id
+    getter seq
+    getter definition
+    setter seq
+    setter definition
     def initialize(definition, seq)
       @entry_id = ""
       @definition = ""
@@ -9,9 +14,6 @@ module BioSeq
       @entry_id = definition.split(" ").first
       @definition = definition
       @seq = seq
-    end
-    def entry_id
-      @entry_id
     end
     def size
       @seq.size
@@ -24,10 +26,16 @@ module BioSeq
       end
     end
     def to_fasta(header=@definition, len=60)
-      ">"+header+"\n"+@seq.gsub(Regex.new(".{1,#{len}}"), "\\0\n").chomp
+      ">"+header+"\n"+@seq.gsub(Regex.new(".{1,#{len}}"), "\\0\n").chomp+"\n"
     end
   end
   class Nucleic < Sequence
+    def to_RNA
+      Nucleic.new(@definition, @seq.gsub("T","U"))
+    end
+    def to_DNA
+      Nucleic.new(@definition, @seq.gsub("U","T"))
+    end
   end
   class Protein < Sequence
   end
