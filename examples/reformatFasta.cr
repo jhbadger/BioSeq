@@ -5,6 +5,7 @@ input = ""
 header = false
 len = 60
 
+ARGV.push("--help") if ARGV.empty?
 OptionParser.parse! do |parser|
   parser.banner = "Usage: reformatFasta [options] --input <file>"
   parser.on("-i FILE", "--input=FILE", "Specifies input file") { |f| input = f }
