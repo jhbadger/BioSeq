@@ -14,11 +14,11 @@ OptionParser.parse! do |parser|
   parser.on("-h", "--help", "Show this help") { puts parser }
 end
 
-tgc = 0
-tat = 0
-tambig = 0
-tsize = 0
-tcount = 0
+tgc = 0_i64
+tat = 0_i64
+tambig = 0_i64
+tsize = 0_i64
+tcount = 0_i64
 if input == ""
   STDERR.printf("seqSummary: --input file is required\n")
 else
@@ -42,6 +42,7 @@ else
   end
   if total
     printf("---%s: %d---\n", "Total sequences", tcount)
+    printf("Total Length: %d (%.1f megabases)\n", tsize, tsize / 1.0e6)
     printf("Average Length: %d (%.1f megabases)\n", tsize/tcount,
            (tsize/tcount) / 1.0e6)
     printf("%% Ambiguous %d%%\n", tambig*100/tsize)
