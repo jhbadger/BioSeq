@@ -47,8 +47,6 @@ module BioSeq
     def initialize(filename, type=Sequence)
       if filename.includes?(".gz")
         @file = Zlib::Inflate.gzip(File.new(filename))
-      elsif filename.includes?(".bz2")
-        @file = Process.run("bzcat #{filename}", shell: true, output: nil).output
       else
         @file = File.new(filename)
       end
