@@ -1,5 +1,5 @@
 require "./BioSeq/*"
-require "zlib"
+require "gzip"
 
 module BioSeq
   class Sequence
@@ -46,7 +46,7 @@ module BioSeq
   class FastaFile
     def initialize(filename, type=Sequence)
       if filename.includes?(".gz")
-        @file = Zlib::Inflate.gzip(File.new(filename))
+        @file = Gzip::Reader.new(filename)
       else
         @file = File.new(filename)
       end
