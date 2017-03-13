@@ -3,6 +3,7 @@ require "option_parser"
 
 input = ""
 total = false
+fastq = false
 
 ARGV.push("--help") if ARGV.empty?
 OptionParser.parse! do |parser|
@@ -11,6 +12,7 @@ OptionParser.parse! do |parser|
             "Specifies input file") { |f| input = f }
   parser.on("-t", "--total",
             "summarize over all seqs") { |t| total = true }
+  parser.on("-q", "--fastq", "use fastq file") {|q| fastq = true}
   parser.on("-h", "--help", "Show this help") { puts parser }
 end
 
@@ -22,7 +24,12 @@ tcount = 0_i64
 if input == ""
   STDERR.printf("seqSummary: --input file is required\n")
 else
-  BioSeq::FastaFile.new(input).each do |seq|
+  if fastq
+    iter = BioSeq::FastxFile.new(input, type=BioSeq::Fastq)
+  else
+    iter = BioSeq::FastxFile.new(input)
+  end
+  iter.each do |seq|
     gc =  seq.seq.count("GCgc")
     at =  seq.seq.count("ATUatu")
     ambig = seq.seq.count("NRYWSnryws")

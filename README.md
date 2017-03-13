@@ -20,7 +20,7 @@ dependencies:
 ```crystal
 require "BioSeq"
 
-BioSeq::FastaFile.new("otus.fa").each do |seq|
+BioSeq::FastxFile.new("otus.fa").each do |seq|
   print seq.to_fasta
 end
 ```

@@ -8,10 +8,11 @@ module BioSeq
     getter definition
     setter seq
     setter definition
-    def initialize(definition, seq)
+    def initialize(definition, seq, qual)
       @entry_id = ""
       @definition = ""
       @seq = ""
+      @qual = ""
       @entry_id = definition.split(" ").first
       @definition = definition
       @seq = seq
@@ -41,9 +42,14 @@ module BioSeq
       100*(@seq.count("GC"))/@seq.size
     end
   end
+  class Fastq < Nucleic
+    def to_fastq(header=@definition)
+      "@"+header+"\n"+@seq+"\n"+"+\n"+@qual+"\n"
+    end
+  end
   class Protein < Sequence
   end
-  class FastaFile
+  class FastxFile
     def initialize(filename, type=Sequence)
       if filename.includes?(".gz")
         @file = Gzip::Reader.new(filename)
@@ -55,19 +61,35 @@ module BioSeq
     def each
       seq = ""
       header = ""
-      @file.each_line do |line|
-        if line[0] == '>'
-          if seq != ""
-            @type = Sequence.new(header, seq).type if @type==Sequence
-            yield @type.new(header, seq)
-            seq = ""
-            header = line[1..line.size].chomp
+      if @type != Fastq
+        @file.each_line do |line|
+          if line[0] == '>'
+            if seq != ""
+              @type = Sequence.new(header, seq, "").type if @type==Sequence
+              yield @type.new(header, seq, "")
+              seq = ""
+              header = line[1..line.size].chomp
+            end
+          else
+            seq += line.chomp.upcase
           end
-        else
-          seq += line.chomp.upcase
+        end
+        yield @type.new(header, seq, "") if seq != ""
+      else
+        count = 0
+        qual = ""
+        @file.each_line do |line|
+          lnum = count % 4
+          if lnum == 0
+            header = line[1..line.size].chomp
+          elsif lnum == 1
+            seq = line.chomp
+          elsif lnum == 3
+            yield Fastq.new(header, seq, line) if seq != ""
+          end
+          count += 1
         end
       end
-      yield @type.new(header, seq) if seq != ""
     end
   end
 end

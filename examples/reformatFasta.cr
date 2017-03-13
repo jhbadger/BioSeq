@@ -18,7 +18,7 @@ end
 if input == ""
   STDERR.printf("reformatFasta: --input file is required\n")
 else
-  BioSeq::FastaFile.new(input).each do |seq|
+  BioSeq::FastxFile.new(input).each do |seq|
     seq.definition = seq.entry_id if header
     print seq.to_fasta(len: len)
   end
