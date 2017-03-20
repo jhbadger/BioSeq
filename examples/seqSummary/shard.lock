@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  BioSeq:
+    github: jhbadger/BioSeq
+    commit: 1e0fc674c1f9920c4cff17faf7c9e4164b7b43fc
+

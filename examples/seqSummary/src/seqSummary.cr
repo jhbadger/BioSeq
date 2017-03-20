@@ -1,4 +1,4 @@
-require "../src/Bioseq"
+require "Bioseq"
 require "option_parser"
 
 input = ""

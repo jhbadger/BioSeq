@@ -38,4 +38,7 @@ describe BioSeq do
   it "should compute gc percentage" do
     s.gc_percent.should eq(33)
   end
+  it "should translate correctly" do
+    s.translate.should eq("K")
+  end
 end

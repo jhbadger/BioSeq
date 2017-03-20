@@ -1,5 +1,6 @@
 require "./BioSeq/*"
 require "gzip"
+require "Bzip"
 
 module BioSeq
   class Sequence
@@ -8,7 +9,7 @@ module BioSeq
     getter definition
     setter seq
     setter definition
-    def initialize(definition, seq, qual)
+    def initialize(definition, seq, qual = "")
       @entry_id = ""
       @definition = ""
       @seq = ""
@@ -41,6 +42,27 @@ module BioSeq
     def gc_percent
       100*(@seq.count("GC"))/@seq.size
     end
+    def translate(code=1)
+      codes = ["FFLLSSSSYY**CC*WLLLLPPPPHHQQRRRRIIIMTTTTNNKKSSRRVVVVAAAADDEEGGGG"]
+      codons = ["TTT", "TTC", "TTA", "TTG", "TCT", "TCC", "TCA", "TCG", "TAT",
+                "TAC", "TAA", "TAG", "TGT", "TGC", "TGA", "TGG", "CTT", "CTC",
+                "CTA", "CTG", "CCT", "CCC", "CCA", "CCG", "CAT", "CAC", "CAA",
+                "CAG", "CGT", "CGC", "CGA", "CGG", "ATT", "ATC", "ATA", "ATG",
+                "ACT", "ACC", "ACA", "ACG", "AAT", "AAC", "AAA", "AAG", "AGT",
+                "AGC", "AGA", "AGG", "GTT", "GTC", "GTA", "GTG", "GCT", "GCC",
+                "GCA", "GCG", "GAT", "GAC", "GAA", "GAG", "GGT", "GGC", "GGA",
+                "GGG"]
+      pseq = ""
+      @seq.upcase.gsub("U","T").chars.each_slice(3) do |c|
+        aanum = codons.index c
+        if aanum
+          pseq += codes[code - 1][aanum]
+        else
+          pseq += "X"
+        end
+      end
+      Protein.new(@definition, pseq)
+    end
   end
   class Fastq < Nucleic
     def to_fastq(header=@definition)
@@ -53,6 +75,8 @@ module BioSeq
     def initialize(filename, type=Sequence)
       if filename.includes?(".gz")
         @file = Gzip::Reader.new(filename)
+      elsif filename.includes?(".bz2")
+        @file = Bzip::Reader.new(filename) 
       else
         @file = File.new(filename)
       end

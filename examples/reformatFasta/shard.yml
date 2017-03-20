@@ -1,0 +1,16 @@
+name: reformatFasta
+version: 0.1.0
+
+authors:
+  - Jonathan Badger <jhbadger@gmail.com>
+
+targets:
+  reformatFasta:
+    main: src/reformatFasta.cr
+
+dependencies:
+  BioSeq:
+    github: jhbadger/BioSeq
+crystal: 0.21.1
+
+license: MIT

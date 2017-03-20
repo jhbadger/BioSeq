@@ -4,4 +4,8 @@ version: 0.1.1
 authors:
   - Jonathan Badger <jhbadger@gmail.com>
 
+dependencies:
+  Bzip:
+    github: jhbadger/Bzip
+    
 license: MIT
