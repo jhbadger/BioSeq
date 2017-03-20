@@ -82,9 +82,15 @@ module BioSeq
       end
       @type = type
     end
-    def each
+    def next
+      each(limit=1) do |seq|
+        return seq
+      end
+    end
+    def each(limit=nil)
       seq = ""
       header = ""
+      count = 0
       if @type != Fastq
         @file.each_line do |line|
           if line[0] == '>'
@@ -92,6 +98,8 @@ module BioSeq
               @type = Sequence.new(header, seq, "").type if @type==Sequence
               yield @type.new(header, seq, "")
               seq = ""
+              count += 1
+              break if limit && count == limit
               header = line[1..line.size].chomp
             end
           else
