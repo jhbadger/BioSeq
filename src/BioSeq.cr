@@ -32,6 +32,24 @@ module BioSeq
     def to_DNA
       Sequence.new(@definition, @seq.gsub("U","T"))
     end
+    def reverse_complement
+      rv = ""
+      @seq.size.times do |i|
+        c = @seq[@seq.size - i - 1]
+        if c == 'A'
+          rv += 'T'
+        elsif c == 'T' || c=='U'
+          rv += 'A'
+        elsif c == 'G'
+          rv += 'C'
+        elsif c == 'C'
+          rv += 'G'
+        else
+          rv += 'N'
+        end
+      end
+      Sequence.new(@definition, rv)
+    end
     def gc_percent
       100*(@seq.count("GC"))/@seq.size
     end

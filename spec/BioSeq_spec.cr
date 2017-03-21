@@ -65,5 +65,9 @@ describe BioSeq do
      end
      File.delete("seq_tmp.fq")
   end
-  
+  it "should reverse complement a sequence" do
+    s = BioSeq::Sequence.new("Foo","AAAT")
+    srev = s.reverse_complement
+    srev.seq.should eq("ATTT")
+  end
 end
