@@ -92,6 +92,7 @@ module BioSeq
     end
     def next
       each do |seq|
+        @line_count += 1
         return seq
       end
     end
@@ -102,7 +103,6 @@ module BioSeq
       @file.each_line do |line|
         if line[0] == '>' || (@line_count % 4 == 0 && @fastq)
           if (!@fastq && seq != "") || (@fastq && qual != "")
-            @line_count += 1
             yield Sequence.new(header, seq, qual)
             seq = ""
             qual = ""
