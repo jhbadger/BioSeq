@@ -2,9 +2,9 @@ version: 1.0
 shards:
   BioSeq:
     github: jhbadger/BioSeq
-    commit: 1e0fc674c1f9920c4cff17faf7c9e4164b7b43fc
+    commit: 15a5c0b565278ea203594891c32eb9c3120c8bf9
 
   Bzip:
     github: jhbadger/Bzip
-    commit: a029ee075e60c81ad0e99131edc5cd37db2174d0
+    commit: dac4e35e520a769dee8aca061da47beaa421efcf
 

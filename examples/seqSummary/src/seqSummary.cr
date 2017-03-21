@@ -24,12 +24,7 @@ tcount = 0_i64
 if input == ""
   STDERR.printf("seqSummary: --input file is required\n")
 else
-  if fastq
-    iter = BioSeq::FastxFile.new(input, type=BioSeq::Fastq)
-  else
-    iter = BioSeq::FastxFile.new(input)
-  end
-  iter.each do |seq|
+  BioSeq::FastxFile.new(input, fastq).each do |seq|
     gc =  seq.seq.count("GCgc")
     at =  seq.seq.count("ATUatu")
     ambig = seq.seq.count("NRYWSnryws")

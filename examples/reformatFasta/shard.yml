@@ -11,6 +11,7 @@ targets:
 dependencies:
   BioSeq:
     github: jhbadger/BioSeq
+    
 crystal: 0.21.1
 
 license: MIT
